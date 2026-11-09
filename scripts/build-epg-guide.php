@@ -432,16 +432,22 @@ logMsg('Channels by country: ' . implode(', ', array_map(fn($k, $v) => "$k=$v", 
 $finalProgrammes = [];
 $orphanProgrammes = 0;
 $withIcon = 0;
+$imgByCountry = [];
 foreach ($allProgrammes as $pr) {
     if (!isset($allChannels[$pr['channel']])) {
         $orphanProgrammes++;
         continue;
     }
     if ($pr['icon'] !== '') $withIcon++;
+    $cc = $allChannels[$pr['channel']]['country'] !== '' ? $allChannels[$pr['channel']]['country'] : '(none)';
+    $imgByCountry[$cc][0] = ($imgByCountry[$cc][0] ?? 0) + 1;
+    $imgByCountry[$cc][1] = ($imgByCountry[$cc][1] ?? 0) + ($pr['icon'] !== '' ? 1 : 0);
     $finalProgrammes[] = $pr;
 }
 logMsg('Programmes dropped (excluded channels): ' . $orphanProgrammes);
 logMsg('Final programmes: ' . count($finalProgrammes) . " ($withIcon with image)");
+ksort($imgByCountry);
+logMsg('Programmes with image by country: ' . implode(', ', array_map(fn($k, $v) => "$k=$v[1]/$v[0]", array_keys($imgByCountry), $imgByCountry)));
 unset($allProgrammes);
 
 ksort($allChannels, SORT_NATURAL | SORT_FLAG_CASE);
