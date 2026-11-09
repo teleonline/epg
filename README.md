@@ -2,39 +2,38 @@
 
 # Teleonline EPG - Guía de programación
 
-Guía de programación de TV (**XMLTV** y **JSON**) generada automáticamente cada día a partir de fuentes EPG públicas. Es el repositorio de la guía de [Teleonline](https://teleonline.org); la lista de canales está en [teleonline/listas](https://github.com/teleonline/listas).
+La guía de programación de TV de [Teleonline](https://teleonline.org), gratuita y actualizada cada día. Añádela a tu reproductor y verás qué están emitiendo los canales ahora mismo y qué viene después.
 
-## URLs
+La lista de canales está en [teleonline/listas](https://github.com/teleonline/listas).
 
-Comprimidos (GitHub Pages, recomendado):
+## Para tu reproductor (XML)
+
+Es el archivo que necesita tu reproductor para mostrar la programación: [Teleonline](https://teleonline.app), VLC, Kodi, Jellyfin, TVHeadend, IPTV Smarters, Tivimate...
+
+Copia esta dirección y pégala donde tu aplicación pida la **guía**, **EPG** o **XMLTV**:
 
 ```
 https://teleonline.github.io/epg/epg.xml.gz
 ```
-```
-https://teleonline.github.io/epg/epg.json.gz
-```
 
-Los mismos archivos, en bruto:
-
-```
-https://raw.githubusercontent.com/teleonline/epg/gh-pages/epg.xml.gz
-```
-```
-https://raw.githubusercontent.com/teleonline/epg/gh-pages/epg.json.gz
-```
-
-Sin comprimir (Release `epg-latest`):
+Si tu reproductor no acepta archivos `.gz`, usa esta versión sin comprimir:
 
 ```
 https://github.com/teleonline/epg/releases/download/epg-latest/epg.xml
 ```
+
+## Para programadores y aplicaciones (JSON)
+
+Es la misma guía en un formato más cómodo para quien crea webs o aplicaciones. Si solo quieres ver la programación en tu reproductor, **no lo necesitas**.
+
+```
+https://teleonline.github.io/epg/epg.json.gz
+```
+
+Sin comprimir:
+
 ```
 https://github.com/teleonline/epg/releases/download/epg-latest/epg.json
 ```
 
-Las URLs son permanentes: cada día se sobrescribe el contenido, pero la dirección no cambia.
-
-## Cómo usar
-
-En cualquier cliente IPTV ([Teleonline](https://teleonline.app), VLC, Kodi, Jellyfin, TVHeadend, IPTV Smarters, Tivimate), añade la URL del XML como fuente EPG remota. En VLC: Medio > Abrir ubicación de red > pegar la URL del XML.
+Las direcciones no cambian nunca: lo que se actualiza cada día es el contenido.
