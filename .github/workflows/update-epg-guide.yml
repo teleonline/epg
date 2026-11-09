@@ -1,1 +1,80 @@
+name: Update EPG guide
 
+on:
+  schedule:
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+
+# Evita dos ejecuciones a la vez (una manual y la programada, por ejemplo)
+concurrency:
+  group: update-epg
+  cancel-in-progress: false
+
+jobs:
+  update-epg:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Run EPG builder
+        run: php scripts/build-epg-guide.php
+
+      # La guía se publica SIEMPRE. Este paso solo comprueba que los archivos existen y, si el número de canales
+      # ha bajado mucho respecto a la guía publicada, deja un AVISO visible en el resumen del workflow (no bloquea).
+      - name: Check guide (warning only)
+        env:
+          REPO: ${{ github.repository }}
+          WARN_DROP_PCT: 15
+        run: |
+          set -euo pipefail
+          test -s epg.xml.gz && test -s epg.json.gz
+          NEW=$(gunzip -c epg.json.gz | jq -r '.channels_count')
+          OLD=$(curl -fsSL "https://raw.githubusercontent.com/${REPO}/gh-pages/epg.json.gz" 2>/dev/null | gunzip -c 2>/dev/null | jq -r '.channels_count' 2>/dev/null || echo 0)
+          echo "Canales: nueva=$NEW, publicada=$OLD"
+          if [ "${OLD:-0}" -gt 0 ] && [ $(( NEW * 100 )) -lt $(( OLD * (100 - WARN_DROP_PCT) )) ]; then
+            echo "::warning::La guía nueva tiene $NEW canales y la anterior $OLD (baja más de ${WARN_DROP_PCT}%). Se publica igualmente; revisa las fuentes en epg/sources.txt."
+            echo "### ⚠️ Menos canales que ayer: $NEW (antes $OLD). Revisa epg/sources.txt." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      # Los .gz NO se guardan en main: cada día se publican en la rama "gh-pages" con UN SOLO commit nuevo
+      # que sustituye al anterior (force push), así el historial no crece. gh-pages sirve también GitHub Pages.
+      - name: Publish compressed files to gh-pages (history overwritten)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          PUB="$(mktemp -d)"
+          cp epg.xml.gz epg.json.gz "$PUB/"
+          touch "$PUB/.nojekyll"
+          printf '<!DOCTYPE html>\n<html><head><meta name="robots" content="noindex, nofollow"></head><body></body></html>\n' > "$PUB/index.html"
+          printf 'User-agent: *\nDisallow: /\n' > "$PUB/robots.txt"
+          cd "$PUB"
+          git init -q -b gh-pages
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "chore: update EPG guide $(date -u +%F)"
+          git push -q --force "https://x-access-token:${GH_TOKEN}@github.com/${REPO}.git" gh-pages
+
+      - name: Upload uncompressed files to Release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: epg-latest
+          name: "EPG latest"
+          body: |
+            EPG files updated automatically.
+          files: |
+            epg.xml
+            epg.json
+          make_latest: true
+          overwrite_files: true
