@@ -1,3 +1,5 @@
+[Read in English](README_en.md)
+
 # Teleonline EPG - Guía de programación
 
 Guía de programación de TV (**XMLTV** y **JSON**) generada automáticamente cada día a partir de fuentes EPG públicas. Es el repositorio de la guía de [Teleonline](https://teleonline.org); la lista de canales está en [teleonline/listas](https://github.com/teleonline/listas).
