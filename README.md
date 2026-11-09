@@ -10,6 +10,8 @@ Comprimidos (GitHub Pages, recomendado):
 
 ```
 https://teleonline.github.io/epg/epg.xml.gz
+```
+```
 https://teleonline.github.io/epg/epg.json.gz
 ```
 
@@ -17,6 +19,8 @@ Los mismos archivos, en bruto:
 
 ```
 https://raw.githubusercontent.com/teleonline/epg/gh-pages/epg.xml.gz
+```
+```
 https://raw.githubusercontent.com/teleonline/epg/gh-pages/epg.json.gz
 ```
 
@@ -24,6 +28,8 @@ Sin comprimir (Release `epg-latest`):
 
 ```
 https://github.com/teleonline/epg/releases/download/epg-latest/epg.xml
+```
+```
 https://github.com/teleonline/epg/releases/download/epg-latest/epg.json
 ```
 
