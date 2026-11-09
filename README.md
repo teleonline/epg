@@ -29,7 +29,7 @@ Las URLs son permanentes: cada día se sobrescribe el contenido, pero la direcci
 
 ## Cómo usar
 
-En cualquier cliente IPTV (VLC, Kodi, Jellyfin, TVHeadend, IPTV Smarters, Tivimate), añade la URL del XML como fuente EPG remota. En VLC: Medio > Abrir ubicación de red > pegar la URL del XML.
+En cualquier cliente IPTV ([Teleonline](https://teleonline.app), VLC, Kodi, Jellyfin, TVHeadend, IPTV Smarters, Tivimate), añade la URL del XML como fuente EPG remota. En VLC: Medio > Abrir ubicación de red > pegar la URL del XML.
 
 Los IDs del EPG son los originales de las fuentes. Para cruzarlos con tu propia lista de canales, empareja por nombre.
 
