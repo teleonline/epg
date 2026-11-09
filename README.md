@@ -2,8 +2,6 @@
 
 Guía de programación de TV (**XMLTV** y **JSON**) generada automáticamente cada día a partir de fuentes EPG públicas. Es el repositorio de la guía de [Teleonline](https://teleonline.org); la lista de canales está en [teleonline/listas](https://github.com/teleonline/listas).
 
-Idea original basada en [miEPG de davidmuma](https://github.com/davidmuma/miEPG).
-
 ## URLs
 
 Comprimidos (GitHub Pages, recomendado):
@@ -57,7 +55,3 @@ Los archivos generados **no se guardan en `main`**: los `.gz` se publican cada d
 ## Generación automática
 
 El workflow `.github/workflows/update-epg-guide.yml` se ejecuta cada día a las 04:00 UTC y también a mano desde la pestaña *Actions*. Para ejecutarlo en local: `php scripts/build-epg-guide.php`.
-
-## Créditos
-
-Idea original: [davidmuma](https://github.com/davidmuma/miEPG). Mantenimiento: [teleonline](https://github.com/teleonline).
